@@ -1,2 +1,3 @@
 # server_python
-# install flask by command: pip install flask
+install package
+pip install -r requirements.txt

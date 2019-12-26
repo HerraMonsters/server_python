@@ -1,9 +1,10 @@
 {
     "status": 0,
     "data": {
-            "pickupAddress": "mỹ đình",
-            "takeoffAddress": "thái bình",
-            "startTime": "9AM",
-            "seats": 3
+        "pickupAddress":"Cầu Giấy",
+        "takeoffAddress":"mình muốn xuống xe ở gia viễn",
+        "time":"12 giờ kém 10 ", 
+        "date":"ngày 12 tháng 1", 
+        "seats":"mình mua vé cho 11 người"
     }
 }

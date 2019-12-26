@@ -7,9 +7,6 @@ Original file is located at
     https://colab.research.google.com/drive/1z8PUpVcvi88nVlTk8fSj-JswwuGAl9xD
 """
 
-!pip install pandas
-!pip install underthesea
-
 import sys
 import re
 import pandas as pd

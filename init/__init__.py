@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, make_response
+from P2 import *
 
 app = Flask(__name__)
 
@@ -7,13 +8,16 @@ def home():
     return '''<h1>Api for chatbot</h1>'''
 
 @app.route('/api/v1/p1', methods=['GET', 'POST'])
-def pre_processing():
+def data_processing():
     if request.method == 'POST':
-        #do something
-        return jsonify({'message': 'POST'})
+        dt = return_result(request.get_json())
+        if(dt["status"] == 0):
+            return book_car(dt["data"])
+        else:
+            return evaluate(dt["data"])
     return jsonify({'message': 'GET'}), 200
 
-@app.route('/api/v1/p2', methods=['GET', 'POST'])
-def processing():
-    return 0
+# @app.route('/api/v1/p2', methods=['GET', 'POST'])
+# def processing():
+#     return 0
 
