@@ -1,0 +1,9 @@
+{
+    "status": 0,
+    "data": {
+            "pickupAddress": "mỹ đình",
+            "takeoffAddress": "thái bình",
+            "startTime": "9AM",
+            "seats": 3
+    }
+}
