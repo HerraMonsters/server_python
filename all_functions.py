@@ -101,7 +101,8 @@ def placecorrect(finalmss): #chuẩn hóa dữ liệu địa điẻm
   place = ''
   for x in finalmss:
     place = place + x + ' '
-  return place
+  return place.strip()
+
 
 #Bỏ stop word và chuẩn hóa
 def pre_processing(str, switch):
@@ -127,7 +128,7 @@ def abbriviateCorrect(mss): #xử lý viết tắt
       final = final + vnAbbriviate[x] + ' '
     else:
       final = final + x +  ' '
-  return final
+  return final.strip()
 ### KẾT THÚC HÀM XỬ LÝ PHẢN ÁNH ###
 
 
@@ -158,18 +159,17 @@ def return_result(data):
 
 
 #Hàm xử lý
-def book_car(data):
-    pickupAddress = data["pickupAddress"]
-    takeoffAddress = data["takeoffAddress"]
-    time = data["startTime"]
-    seats = data["seats"]
-    print(pickupAddress)
-    print(takeoffAddress)
-    print(time)
-
-    print(seats)
-    print("success")
-    return "success"
+# def book_car(data):
+#     pickupAddress = data["pickupAddress"]
+#     takeoffAddress = data["takeoffAddress"]
+#     time = data["startTime"]
+#     seats = data["seats"]
+#     print(pickupAddress)
+#     print(takeoffAddress)
+#     print(time)
+#     print(seats)
+#     print("success")
+#     return 
 
 #hàm tạo từ điển cảm xúc
 def dict():
@@ -280,4 +280,9 @@ def evaluate(data):
     for p in pos_point:
         p_point += float(p)
     print("positive point:",p_point, "\n","negative point:", n_point)
-    return "success"
+    if n_point > p_point:
+      return {"message": 0}
+    elif n_point < p_point:
+      return {"message": 1}
+    else:
+      return {"message": 1000}

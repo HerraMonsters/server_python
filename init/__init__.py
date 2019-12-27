@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, make_response
-from P2 import *
+from all_functions import  evaluate, return_result
 
 app = Flask(__name__)
 
@@ -12,7 +12,7 @@ def data_processing():
     if request.method == 'POST':
         dt = return_result(request.get_json())
         if(dt["status"] == 0):
-            return book_car(dt["data"])
+            return jsonify(dt['data']), 200
         else:
             return evaluate(dt["data"])
     return jsonify({'message': 'GET'}), 200
