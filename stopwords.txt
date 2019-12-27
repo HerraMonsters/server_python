@@ -1947,3 +1947,7 @@ lên
 đưa
 tới
 muốn
+đứng
+chờ
+bắt
+đợi
