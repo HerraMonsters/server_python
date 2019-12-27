@@ -280,9 +280,7 @@ def evaluate(data):
     for p in pos_point:
         p_point += float(p)
     print("positive point:",p_point, "\n","negative point:", n_point)
-    if n_point > p_point:
-      return {"message": 0}
-    elif n_point < p_point:
-      return {"message": 1}
-    else:
-      return {"message": 1000}
+    return {
+      "negative": n_point,
+      "positive": p_point
+    }
