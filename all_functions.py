@@ -32,6 +32,19 @@ with open('vnabb.json','r', encoding="utf-8") as j:
 abbjson = re.sub(r'[\n]','',abbjson)
 vnAbbriviate = json.loads(abbjson)
 
+#Thiết lập từ chỉ sắc thái
+with open('sacThai.json','r', encoding="utf-8") as l:
+  sacjson = l.read()
+sacjson = re.sub(r'[\n]','',sacjson)
+sacThai = json.loads(sacjson)
+
+#Thiết lập negDict
+negDict = []
+f = open("negDict.txt", encoding='utf-8')
+for x in f:
+  x = re.sub(r'[\n]', '',x)
+  negDict.append(x)
+
 def standardize(defmss,switch): #hàm xử lý ban đầu
   if not defmss:
     return('')
@@ -217,43 +230,20 @@ def dict():
 def text_tokenize(data):
     words = []
     words1 = word_tokenize(data)
-    for w in words1:
-        words.append(w)
-    
-    bigrams = TextBlob(data).ngrams(2)
-    e = ""
-    for i, v in enumerate(bigrams):
-        for j, val in enumerate(bigrams[i]):
-            e += bigrams[i][j]
-            e += " "
-        e = e.strip()
-        if e not in words1:
-            words.append(e)
-            e = ""
-
-    trigrams = TextBlob(data).ngrams(3)
-    e = ""
-    for i, v in enumerate(trigrams):
-        for j, val in enumerate(trigrams[i]):
-            e += trigrams[i][j]
-            e += " "
-        e = e.strip()
-        if e not in words1:
-            words.append(e)
-            e = ""
-
-    quadgrams = TextBlob(data).ngrams(4)
-    e = ""
-    for i, v in enumerate(quadgrams):
-        for j, val in enumerate(quadgrams[i]):
-            e += quadgrams[i][j]
-            e += " "
-        e = e.strip()
-        if e not in words1:
-            words.append(e)
-            e = ""
+    words1 = [" "] + words1 + [" ", " ", " "]
+    words2 = []
+    for i, w in enumerate(words1):
+      if i<len(words1)-2:
+        a = words1[i-1]
+        b = w
+        c = words1[i+1]
+        words2.append(a)
+        words2.append(b)
+        words2.append(c)
+        words.append(words2)
+        words2 = []
+    print(words)
     return words
-
 
 #hàm phân tích cảm xúc
 def evaluate(data):
@@ -264,23 +254,59 @@ def evaluate(data):
     pos_point = []
     neg_point = []
     ww = []
-    for word in words:
-        for w in dictionary:
-            for i, val in enumerate(w):
-                if i == 2:
-                    if word in w[2]:
-                        ww.append(word)
-                        pos_point.append(w[0])
-                        neg_point.append(w[1])
+    for i, word in enumerate(words):
+        for j, val in enumerate(word):
+          if(j == 1):
+            for w in dictionary:
+              for k, value in enumerate(w):
+                if k==2 and val in value:
+                  ppoint = float(w[0])
+                  npoint = float(w[1]) 
+                  a = ""
+                  if word[0] in sacThai or word[2] in sacThai:
+                   
+                    if word[0] in sacThai and ppoint > npoint:
+                      ppoint = ppoint*float(sacThai[word[0]])
+                      a += word[0] + " " + val
+                    elif word[0] in sacThai and ppoint < npoint:
+                      npoint = npoint*float(sacThai[word[0]])
+                      a += word[0] + " " + val
+                    if word[2] in sacThai and ppoint > npoint:
+                      ppoint = ppoint*float(sacThai[word[2]])
+                      if a == "":
+                        a += val + " " + word[2]
+                      else:
+                        a += " " + word[2]
+                    elif word[2] in sacThai and ppoint < npoint:
+                      npoint = npoint*float(sacThai[word[2]])
+                      if a == "":
+                        a += val + " " + word[2]
+                      else:
+                        a += " " + word[2]
+                  else:
+                    a = val
+                  if word[0] in negDict:
+                    x = ppoint
+                    ppoint = npoint
+                    npoint = x
+                    a = word[0] + " " + a
+                  ww.append(a)
+                  pos_point.append(ppoint)
+                  neg_point.append(npoint)
     print(ww, "\n", pos_point, "\n", neg_point)
     n_point = 0
     p_point = 0
     for p in neg_point:
-        n_point += float(p)
+        n_point += p
     for p in pos_point:
-        p_point += float(p)
-    print("positive point:",p_point, "\n","negative point:", n_point)
+        p_point += p
+    leng = len(ww)
+    point = 0
+    if leng != 0:
+      point = ((p_point - n_point)/leng)
+    print("positive point:",p_point, "\n","negative point:", n_point, "\n", "sentiment point: ", point)
     return {
-      "negative": n_point,
-      "positive": p_point
-    }
+      "positive point:": p_point,
+       "negative point:": n_point,
+      "point: ": point
+      }
