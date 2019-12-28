@@ -126,6 +126,7 @@ def getTime(data): #Chuẩn hóa thời gian
   year = datetime.date.today().year
   list_time = numSeeker(pre_processing(data['date'], 0))
   print(list_time)
+  # Thay thế năm nếu người dùng nhập năm
   for k in list_time:
     if int(k) >= year:
       year = int(k)
@@ -139,8 +140,6 @@ def getTime(data): #Chuẩn hóa thời gian
   # print(time)
   if len(time)==6:
     d = datetime.datetime(int(time[0]),int(time[2]),int(time[1]),int(time[3]),int(time[4]),int(time[5]))
-    # print(d.timestamp())
-    # timestamp = d.replace(tzinfo=timezone.utc).timestamp() #dòng này đưa thời gian về giờ utc
   return d.timestamp()*1000
 
 
@@ -317,7 +316,7 @@ def evaluate(data):
       point = ((p_point - n_point)/leng)
     print("positive point:",p_point, "\n","negative point:", n_point, "\n", "sentiment point: ", point)
     return {
-      "positive point:": p_point,
-      "negative point:": n_point,
-      "point: ": point
+      "positive point": p_point,
+      "negative point": n_point,
+      "point": point
       }
