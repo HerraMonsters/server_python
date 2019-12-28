@@ -76,16 +76,17 @@ def sw_remover(stdmss): #hàm lược stopword
 
 def numSeeker(finalmss): #lọc dữ liệu số cho date và seats
   allNum = []
+  switch = 0
   finalmss = word_tokenize(finalmss)
   for i,x in enumerate(finalmss):
     if x.isdigit():
       allNum.append(x)
-    #if x == '/':
-      #allNum.append(int(finalmss[i+1]))
-      #i=i+3
-    #if x == 'tháng':
-      #allNum.append(int(finalmss[i+1]))
-      #i=i+3
+    if x == 'tháng' and len(allNum)==0:
+      switch=1
+  if switch == 1:
+    c=allNum[0]
+    allNum[0] = allNum[1]
+    allNum[1] = c
   return allNum
 
 def timeSeeker(finalmss): #chuẩn hóa thời gian
@@ -123,14 +124,24 @@ def pre_processing(str, switch):
 
 def getTime(data): #Chuẩn hóa thời gian
   year = datetime.date.today().year
+  list_time = numSeeker(pre_processing(data['date'], 0))
+  print(list_time)
+  for k in list_time:
+    if int(k) >= year:
+      year = int(k)
+      list_time.remove(k)
   time = [year]
-  for i in numSeeker(pre_processing(data['date'], 0)): 
+  print(list_time)
+  for i in list_time: 
     time.append(i)
   for j in timeSeeker(pre_processing(data['time'],2)):
     time.append(j)
-
-  d = datetime.datetime(int(time[0]),int(time[1]),int(time[2]),int(time[3]),int(time[4]),int(time[5]))
-  return d.replace(tzinfo=timezone.utc).timestamp()
+  # print(time)
+  if len(time)==6:
+    d = datetime.datetime(int(time[0]),int(time[2]),int(time[1]),int(time[3]),int(time[4]),int(time[5]))
+    # print(d.timestamp())
+    # timestamp = d.replace(tzinfo=timezone.utc).timestamp() #dòng này đưa thời gian về giờ utc
+  return d.timestamp()*1000
 
 
 ### HÀM XỬ LÝ PHẢN ÁNH ###
