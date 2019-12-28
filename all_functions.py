@@ -72,7 +72,7 @@ def sw_remover(stdmss): #hàm lược stopword
     for x in stdmss:
       if x not in vnStopword:
         mss = mss + x + ' '
-    return mss
+    return mss.strip()
 
 def numSeeker(finalmss): #lọc dữ liệu số cho date và seats
   allNum = []
@@ -307,6 +307,6 @@ def evaluate(data):
     print("positive point:",p_point, "\n","negative point:", n_point, "\n", "sentiment point: ", point)
     return {
       "positive point:": p_point,
-       "negative point:": n_point,
+      "negative point:": n_point,
       "point: ": point
       }

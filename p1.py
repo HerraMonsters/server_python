@@ -83,9 +83,10 @@ def sw_remover(stdmss): #hàm lược stopword
     return('')
   else:
     mss = ''
+    print (stdmss)
     for x in stdmss:
       if x not in vnStopword:
-        mss = mss + x + ' ';
+        mss = mss + x + ' '
     return mss
 
 def numSeeker(finalmss): #lọc dữ liệu số cho date và seats
