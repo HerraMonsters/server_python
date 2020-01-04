@@ -81,12 +81,16 @@ def numSeeker(finalmss): #lọc dữ liệu số cho date và seats
   for i,x in enumerate(finalmss):
     if x.isdigit():
       allNum.append(x)
-    if x == 'tháng' and len(allNum)==0:
-      switch=1
+    if x == 'tháng' and len(allNum)>0:
+      switch += 1
+    else:
+      switch += 0
+  #print("test1",allNum, switch)
   if switch == 1:
     c=allNum[0]
     allNum[0] = allNum[1]
     allNum[1] = c
+  #print("test2", allNum)
   return allNum
 
 def timeSeeker(finalmss): #chuẩn hóa thời gian
@@ -139,7 +143,7 @@ def getTime(data): #Chuẩn hóa thời gian
     time.append(j)
   # print(time)
   if len(time)==6:
-    d = datetime.datetime(int(time[0]),int(time[2]),int(time[1]),int(time[3]),int(time[4]),int(time[5]))
+    d = datetime.datetime(int(time[0]),int(time[1]),int(time[2]),int(time[3]),int(time[4]),int(time[5]))
   return d.timestamp()*1000
 
 
