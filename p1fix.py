@@ -53,7 +53,7 @@ datve = {
     'pickupAddress':'trung tâm thành phố Hà Nội', #điểm đi (máy hỏi địa điểm xuống, đồng thời xuất lịch trình các điểm đón trả)
     'takeoffAddress':'trung tâm thành phố Thái Bình', #điểm đến (máy hỏi thời gian đi, đồng thời xuất bảng thời gian xe xuất phát tại pickup_point)
     'time':'12h09', #thời gian khởi hành (máy hỏi ngày đi, đưa ra gợi ý về ngày khách tương tác hiện tại, ngày mai, ngày kia)
-    'date':'tôi muốn đi vào ngày 15 tháng 1', #ngày đi (máy hỏi số ghế)
+    'date':'tôi muốn đi vào ngày 19 tháng 12', #ngày đi (máy hỏi số ghế)
     'seats':'12' #số ghế (máy tổng hợp lại thông tin tóm tắt cho khách)
 }
 req = 1
@@ -95,16 +95,19 @@ def numSeeker(finalmss): #lọc dữ liệu số cho date và seats
   allNum = []
   switch = 0
   finalmss = word_tokenize(finalmss)
-  print(finalmss[0])
   for i,x in enumerate(finalmss):
     if x.isdigit():
       allNum.append(x)
-    if x == 'tháng' and len(allNum)==0:
-      switch=1
+    if x == 'tháng' and len(allNum)>0:
+      switch += 1
+    else:
+      switch += 0
+  print("test1",allNum, switch)
   if switch == 1:
     c=allNum[0]
     allNum[0] = allNum[1]
     allNum[1] = c
+  print("test2", allNum)
   return allNum
 
 def timeSeeker(finalmss): #chuẩn hóa thời gian
@@ -147,7 +150,7 @@ print(time)
 for j in timeSeeker(sw_remover(standardize(datve['time'],2))):
   time.append(j)
 if len(time)==6:
-  d = datetime.datetime(int(time[0]),int(time[2]),int(time[1]),int(time[3]),int(time[4]),int(time[5]))
+  d = datetime.datetime(int(time[0]),int(time[1]),int(time[2]),int(time[3]),int(time[4]),int(time[5]))
   timestamp = d.replace(tzinfo=timezone.utc).timestamp()
   seats = numSeeker(sw_remover(standardize(datve['seats'],2)))
 
